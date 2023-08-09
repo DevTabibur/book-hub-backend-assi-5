@@ -1,5 +1,5 @@
 import app from './app'
-import config from './app/config/config'
+import config from './config/config'
 const PORT = config.port || 5000
 
 const startServer = async (): Promise<void> => {

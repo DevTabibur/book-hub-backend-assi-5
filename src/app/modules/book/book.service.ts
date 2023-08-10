@@ -69,8 +69,35 @@ const updateBookService = async (
   return data
 }
 
-const deleteBookService = async (bookId: string): Promise<IBook> => {
-  const data = await bookModel.findByIdAndDelete(bookId)
+const deleteBookService = async (
+  bookId: string,
+  user: JwtPayload,
+): Promise<IBook> => {
+  if (!Types.ObjectId.isValid(bookId)) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Invalid Book Id')
+  }
+
+  const book = await getSingleBookService(bookId)
+  if (!book) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Book is not found')
+  }
+
+  const isValidUser = await userModel.isUserExist(user?.email)
+  if (!isValidUser) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'user not found')
+  }
+
+  if (
+    !isValidUser?._id ||
+    book.publishedBy.toString() !== isValidUser._id.toString()
+  ) {
+    throw new ApiError(
+      httpStatus.FORBIDDEN,
+      `Your'e not authorized to delete this book`,
+    )
+  }
+
+  const data = await bookModel.findOneAndDelete({ _id: bookId })
   if (!data) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Books not found')
   }

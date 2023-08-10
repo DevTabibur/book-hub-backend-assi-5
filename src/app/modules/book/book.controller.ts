@@ -51,7 +51,8 @@ const updateBook = catchAsync(async (req: Request, res: Response) => {
 
 const deleteBook = catchAsync(async (req: Request, res: Response) => {
   const { bookId } = req.params
-  const result = await BookService.deleteBookService(bookId)
+  const user = req.user
+  const result = await BookService.deleteBookService(bookId, user as JwtPayload)
   sendSuccessResponse(res, {
     statusCode: httpStatus.OK,
     message: 'Book deleted successfully',

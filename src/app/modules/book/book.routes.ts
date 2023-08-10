@@ -16,4 +16,7 @@ router.get('/:bookId', verifyToken, BookController.getBookByID)
 // **update a book**
 router.patch('/:bookId', verifyToken, BookController.updateBook)
 
+// **delete book**
+router.delete('/:bookId', verifyToken, BookController.deleteBook)
+
 export const BookRoute = router

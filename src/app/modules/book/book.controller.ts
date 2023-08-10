@@ -3,8 +3,15 @@ import catchAsync from '../../../common/catchAsync'
 import { BookService } from './book.service'
 import { sendSuccessResponse } from '../../../common/sendSuccessResponse'
 import httpStatus from 'http-status'
+import { JwtPayload } from 'jsonwebtoken'
+
 const getAllBook = catchAsync(async (req: Request, res: Response) => {
-  console.log('hitted')
+  const result = await BookService.getAllBookService()
+  sendSuccessResponse(res, {
+    statusCode: httpStatus.OK,
+    message: 'book retrieved successfully',
+    data: result,
+  })
 })
 
 const createBook = catchAsync(async (req: Request, res: Response) => {
@@ -17,10 +24,25 @@ const createBook = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
+const getBookByID = catchAsync(async (req: Request, res: Response) => {
+  const { bookId } = req.params
+  const result = await BookService.getSingleBookService(bookId)
+  sendSuccessResponse(res, {
+    statusCode: httpStatus.OK,
+    message: 'Single Book is retrieved',
+    data: result,
+  })
+})
+
 const updateBook = catchAsync(async (req: Request, res: Response) => {
   const { bookId } = req.params
   const updateData = req.body
-  const result = await BookService.updateBookService(bookId, updateData)
+  const user = req.user
+  const result = await BookService.updateBookService(
+    bookId,
+    updateData,
+    user as JwtPayload,
+  )
   sendSuccessResponse(res, {
     statusCode: httpStatus.OK,
     message: 'Book updated successfully',
@@ -36,20 +58,10 @@ const deleteBook = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
-const getSingleBook = catchAsync(async (req: Request, res: Response) => {
-  const { bookId } = req.params
-  const result = await BookService.getSingleBookService(bookId)
-  sendSuccessResponse(res, {
-    statusCode: httpStatus.OK,
-    message: 'single book retrieved successfully',
-    data: result,
-  })
-})
-
 export const BookController = {
   getAllBook,
   createBook,
   updateBook,
   deleteBook,
-  getSingleBook,
+  getBookByID,
 }

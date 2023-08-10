@@ -16,8 +16,8 @@ export default async function verifyToken(
   res: Response,
   next: NextFunction,
 ): Promise<void> {
-  const token = req.headers.authorization?.split(' ')[1] || ''
-
+  const token =
+    req.headers.authorization?.split(' ')[1] || '' || req.headers.authorization
   try {
     if (!token) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Token not found')

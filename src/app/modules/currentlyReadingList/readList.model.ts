@@ -16,5 +16,12 @@ const readingListSchema = new Schema<IReadingList>(
   },
 )
 
+readingListSchema.statics.existingReadingList = async function (
+  userId: string,
+): Promise<IReadingList | null> {
+  const user = this.findOne({ userId })
+  return user
+}
+
 const readingListModel = model<IReadingList>('ReadList', readingListSchema)
 export default readingListModel

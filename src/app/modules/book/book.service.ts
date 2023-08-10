@@ -4,6 +4,7 @@ import { IBook } from './book.interface'
 import bookModel from './book.model'
 import httpStatus from 'http-status'
 import { Types } from 'mongoose'
+import userModel from '../user/user.model'
 
 const getSingleBookService = async (bookId: string): Promise<IBook> => {
   if (!Types.ObjectId.isValid(bookId)) {
@@ -38,10 +39,30 @@ const updateBookService = async (
   updateData: IBook,
   user: JwtPayload,
 ): Promise<Partial<IBook>> => {
-  // const book = await getBookById
-  const data = await bookModel.findByIdAndUpdate({ _id: bookId }, updateData, {
-    new: true,
-  })
+  const book = await getSingleBookService(bookId)
+  if (!book) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Book not found')
+  }
+  const isValidUser = await userModel.isUserExist(user?.email)
+
+  if (!isValidUser) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User is not found')
+  }
+  if (
+    !isValidUser._id ||
+    book.publishedBy.toString() !== isValidUser._id.toString()
+  ) {
+    throw new ApiError(
+      httpStatus.FORBIDDEN,
+      `Your'e not authorized to update this book`,
+    )
+  }
+
+  const data = await bookModel
+    .findByIdAndUpdate({ _id: bookId }, updateData, {
+      new: true,
+    })
+    .populate('publishedBy')
   if (!data) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Books not found')
   }

@@ -6,5 +6,5 @@ export interface IWishList {
 }
 
 export interface IWishListModel extends Model<IWishList> {
-  existingWishList: (userId: Types.ObjectId) => Promise<IWishList | null>
+  existingWishList(userId: Types.ObjectId): Promise<IWishList | null>
 }

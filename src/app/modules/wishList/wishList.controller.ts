@@ -23,6 +23,32 @@ const addToWishList = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
-export const wishListController = {
+const getSpecificWishListOfUser = catchAsync(
+  async (req: Request, res: Response) => {
+    const user = req.user
+    if (!user) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'user not found')
+    }
+
+    const isUserExist = await userModel.isUserExist(user?.email)
+
+    if (!isUserExist) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, 'user not found')
+    }
+
+    const result = await WishListService.getSpecificWishListOfUserService(
+      isUserExist?._id as string,
+    )
+
+    sendSuccessResponse(res, {
+      statusCode: httpStatus.OK,
+      message: 'WishList retrieved successfully',
+      data: result,
+    })
+  },
+)
+
+export const WishListController = {
+  getSpecificWishListOfUser,
   addToWishList,
 }

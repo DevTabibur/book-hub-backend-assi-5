@@ -66,7 +66,10 @@ const loginUserService = async (loginData: IUser): Promise<IUserResponse> => {
   return { accessToken, data: { email: isUserExist.email } }
 }
 
+const loggedInUserService = async () => {}
+
 export const AuthService = {
   registerUserService,
   loginUserService,
+  loggedInUserService,
 }

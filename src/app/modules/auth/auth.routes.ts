@@ -9,4 +9,7 @@ router.post('/register', AuthController.registerUser)
 // **login user**
 router.post('/login', AuthController.loginUser)
 
+// **regenerate token / refresh token**
+router.get('/me', AuthController.loggedInUser)
+
 export const AuthRoute = router

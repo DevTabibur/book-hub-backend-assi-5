@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { IBook } from './book.interface'
+import { IBook, IBookModel } from './book.interface'
 
 const bookSchema = new Schema<IBook>(
   {
@@ -52,6 +52,6 @@ bookSchema.statics.findByGenre = async function (
   return book
 }
 
-const bookModel = model<IBook>('Book', bookSchema)
+const bookModel = model<IBook, IBookModel>('Book', bookSchema)
 
 export default bookModel

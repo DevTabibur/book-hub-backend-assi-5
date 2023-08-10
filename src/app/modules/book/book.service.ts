@@ -4,7 +4,11 @@ import bookModel from './book.model'
 import httpStatus from 'http-status'
 
 const createBookService = async (bookData: IBook): Promise<IBook> => {
-  const data = await bookModel.create(bookData)
+  const isExistBook = await bookModel.findByTitle(bookData.title)
+  if (isExistBook) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Book is already exist')
+  }
+  const data = await (await bookModel.create(bookData)).populate('publishedBy')
   if (!data) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'book creation failed')
   }

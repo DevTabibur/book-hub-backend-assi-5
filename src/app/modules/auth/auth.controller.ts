@@ -33,7 +33,10 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
+const loggedInUser = catchAsync(async (req: Request, res: Response) => {})
+
 export const AuthController = {
   registerUser,
   loginUser,
+  loggedInUser,
 }

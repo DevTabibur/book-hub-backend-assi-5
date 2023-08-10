@@ -1,8 +1,10 @@
 import { Router } from 'express'
+import verifyToken from '../../middleware/verifyToken'
+import { wishListController } from './wishList.controller'
 
 const router = Router()
 
-// **get all wish-listed books**
-router.get('/')
+// **add to wish-list**
+router.post('/', verifyToken, wishListController.addToWishList)
 
 export const wishListRoute = router

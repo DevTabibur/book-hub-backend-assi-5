@@ -19,6 +19,21 @@ const registerUser = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
+const loginUser = catchAsync(async (req: Request, res: Response) => {
+  const loginData = req.body
+  const result = await AuthService.loginUserService(loginData)
+  res
+    .header('Authorization', `Bearer ${result?.accessToken}`)
+    .header('Access-Control-Expose-Headers', 'Authorization')
+    .json({
+      message: 'User Created successfully',
+      success: true,
+      statusCode: httpStatus.CREATED,
+      accessToken: result?.accessToken,
+    })
+})
+
 export const AuthController = {
   registerUser,
+  loginUser,
 }

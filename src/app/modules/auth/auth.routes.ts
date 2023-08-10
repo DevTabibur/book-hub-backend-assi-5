@@ -6,4 +6,7 @@ const router = Router()
 // **register user**
 router.post('/register', AuthController.registerUser)
 
+// **login user**
+router.post('/login', AuthController.loginUser)
+
 export const AuthRoute = router

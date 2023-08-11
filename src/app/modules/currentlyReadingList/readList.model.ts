@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { IReadingList } from './readList.interface'
+import { IReadingList, IReadingListModel } from './readList.interface'
 
 const readingListSchema = new Schema<IReadingList>(
   {
@@ -23,5 +23,8 @@ readingListSchema.statics.existingReadingList = async function (
   return user
 }
 
-const readingListModel = model<IReadingList>('ReadList', readingListSchema)
+const readingListModel = model<IReadingList, IReadingListModel>(
+  'ReadList',
+  readingListSchema,
+)
 export default readingListModel

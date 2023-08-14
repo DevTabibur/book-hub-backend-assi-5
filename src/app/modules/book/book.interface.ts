@@ -6,6 +6,7 @@ export interface IBook {
   genre: string
   publicationYear: number
   publishedBy: Types.ObjectId
+  imageUrl: string
 }
 
 export interface IBookModel extends Model<IBook> {

@@ -11,7 +11,7 @@ router.get('/', BookController.getAllBook)
 router.post('/', verifyToken, BookController.createBook)
 
 // **get book by id**
-router.get('/:bookId', verifyToken, BookController.getBookByID)
+router.get('/:bookId', BookController.getBookByID)
 
 // **update a book**
 router.patch('/:bookId', verifyToken, BookController.updateBook)

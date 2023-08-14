@@ -3,6 +3,7 @@ import { BookRoute } from '../modules/book/book.routes'
 import { AuthRoute } from '../modules/auth/auth.routes'
 import { wishListRoute } from '../modules/wishList/wishList.routes'
 import { ReadListRoute } from '../modules/currentlyReadingList/readList.routes'
+import { CompleteBookRoute } from '../modules/completeList/complete.routes'
 
 const router = Router()
 
@@ -22,6 +23,10 @@ const routes = [
   {
     path: '/read-list',
     route: ReadListRoute,
+  },
+  {
+    path: '/complete-list',
+    route: CompleteBookRoute,
   },
 ]
 
